@@ -38,7 +38,7 @@ class Vacancy(models.Model):
     company = models.CharField(max_length=250)
     description = models.TextField()
     city = models.ForeignKey('City', on_delete=models.CASCADE)
-    langeage = models.ForeignKey('Language', on_delete=models.CASCADE)
+    language = models.ForeignKey('Language', on_delete=models.CASCADE)
     timestamp = models.DateField(auto_now_add=True)
 
     class Meta:
