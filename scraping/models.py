@@ -2,6 +2,12 @@ from django.db import models
 
 from .utils import from_cyrillic_to_eng
 
+import jsonfield
+
+
+def default_urls():
+    return {'work': '', 'rabota': '', 'dou': '', 'djinni': ''}
+
 
 class City(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -46,3 +52,17 @@ class Vacancy(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Error(models.Model):
+    timestamp = models.DateField(auto_now_add=True)
+    data = jsonfield.JSONField()  # noqa | to support in sqllite3 - in postgres threre is such field in sqllite - no
+
+
+class Url(models.Model):
+    city = models.ForeignKey('City', on_delete=models.CASCADE)
+    language = models.ForeignKey('Language', on_delete=models.CASCADE)
+    url_data = jsonfield.JSONField(default=default_urls)
+
+    class Meta:
+        unique_together = ('city', 'language')
